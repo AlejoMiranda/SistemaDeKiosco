@@ -84,6 +84,8 @@ SELECT * FROM proveedor WHERE id = 1;
 SELECT date_format(venta.fecha,'%d/%m/%Y') AS modified_date FROM bdKioskoRD.venta;
 
 
-UPDATE producto SET stock = 100 WHERE id = 4;
+UPDATE producto SET stock = 10 WHERE id = 3;
 
 SELECT * FROM producto;
+
+SELECT * FROM producto WHERE stock != 0

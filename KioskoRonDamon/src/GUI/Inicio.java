@@ -544,6 +544,12 @@ public class Inicio extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel20.setText("Cantidad:");
 
+        txtCantProductoaComprar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantProductoaComprarKeyReleased(evt);
+            }
+        });
+
         btnAddProductoComprar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add_icon-icons.com_74429.png"))); // NOI18N
         btnAddProductoComprar.setText("Agregar");
         btnAddProductoComprar.addActionListener(new java.awt.event.ActionListener() {
@@ -586,7 +592,7 @@ public class Inicio extends javax.swing.JFrame {
                         .addContainerGap(22, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblStockProducto)
+                        .addComponent(lblStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlVentaLayout.setVerticalGroup(
@@ -613,11 +619,9 @@ public class Inicio extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(pnlVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlVentaLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblPrecioProducto)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVentaLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAddProductoComprar)
                                 .addGap(34, 34, 34))))))
         );
@@ -1039,8 +1043,10 @@ public class Inicio extends javax.swing.JFrame {
 
             Producto p = model.getProducto(fila);
 
-            lblProductoaComprar.setText(Integer.toString(p.getId())); /*id del producto a comprar*/
-            lblStockProducto.setText(Integer.toString(p.getStock())); /*Stock actual del producto*/
+            lblProductoaComprar.setText(Integer.toString(p.getId()));
+            /*id del producto a comprar*/
+            lblStockProducto.setText(Integer.toString(p.getStock()));
+            /*Stock actual del producto*/
             lblPrecioProducto.setText(Integer.toString(p.getPrecioVenta()));
             txtNombreProductoaComprar.setText(p.getNombre());
         }
@@ -1050,17 +1056,15 @@ public class Inicio extends javax.swing.JFrame {
 
         int cantidadPro = Integer.parseInt(txtCantProductoaComprar.getText());
         int precioProducto = Integer.parseInt(lblPrecioProducto.getText());
-        
+
         /* PARA ACTUALIZAR EL PRODUCTO*/
         int idProducto = Integer.parseInt(lblProductoaComprar.getText());
         int stock = Integer.parseInt(lblStockProducto.getText());
-        
+
         ProductoActualizar proAc = new ProductoActualizar(idProducto, stock, cantidadPro);
-        productActualizarList.add(proAc);       
-        
+        productActualizarList.add(proAc);
+
         /* PARA ACTUALIZAR EL PRODUCTO*/
-        
-        
         String nombreProducto = txtNombreProductoaComprar.getText();
 
         totalActual = totalActual + (cantidadPro * precioProducto);
@@ -1072,6 +1076,9 @@ public class Inicio extends javax.swing.JFrame {
         tblProductoAvender.setModel(tm);
 
         lblTotalaPagar.setText(Integer.toString(totalActual));
+        
+        txtCantProductoaComprar.setText(null);
+        txtNombreProductoaComprar.setText(null);
 
     }//GEN-LAST:event_btnAddProductoComprarActionPerformed
 
@@ -1079,12 +1086,14 @@ public class Inicio extends javax.swing.JFrame {
         try {
             int totalVenta = Integer.parseInt(lblTotalaPagar.getText());
             data.addVenta(totalVenta);
-            
+
             for (ProductoActualizar proAct : productActualizarList) {
                 data.actualizarStock(proAct.getId(), (proAct.getStockActual() - proAct.getCantMenos()));
             }
 
             cleanFormVenta();
+            cleanTablaVenta();
+            cargarTablaProductos();
 
         } catch (SQLException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -1101,10 +1110,7 @@ public class Inicio extends javax.swing.JFrame {
 
         totalActual = 0;
         usuariosList = new ArrayList<>();
-        productActualizarList = new ArrayList<>();
-        
-        TMProductoVendido tm = new TMProductoVendido(productoVentaList);
-        tblProductoAvender.setModel(tm);
+        cleanTablaVenta();
 
         jfrVender.setVisible(false);
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
@@ -1122,6 +1128,19 @@ public class Inicio extends javax.swing.JFrame {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_txtBuscarProductoKeyReleased
+
+    private void txtCantProductoaComprarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantProductoaComprarKeyReleased
+        
+        int cantidadPro = Integer.parseInt(txtCantProductoaComprar.getText());
+        int stock = Integer.parseInt(lblStockProducto.getText());
+        
+        if((stock - cantidadPro) < 0){
+            JOptionPane.showMessageDialog(this, "Ingrese Una Cantidad Acorde");
+            txtCantProductoaComprar.setText(null);
+        }
+        
+        
+    }//GEN-LAST:event_txtCantProductoaComprarKeyReleased
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1359,11 +1378,18 @@ public class Inicio extends javax.swing.JFrame {
         totalActual = 0;
         usuariosList = new ArrayList<>();
         productActualizarList = new ArrayList<>();
-        
+
         TMProductoVendido tm = new TMProductoVendido(productoVentaList);
         tblProductoAvender.setModel(tm);
 
 //        jfrAddProducto.setVisible(false);
+    }
+
+    private void cleanTablaVenta() {
+        productoVentaList.clear();
+
+        TMProductoVendido tm = new TMProductoVendido(productoVentaList);
+        tblProductoAvender.setModel(tm);
     }
 
 }

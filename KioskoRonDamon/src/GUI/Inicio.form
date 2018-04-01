@@ -744,7 +744,7 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblStockProducto" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblStockProducto" min="-2" pref="23" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -778,12 +778,10 @@
                               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="lblPrecioProducto" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="btnAddProductoComprar" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                                   </Group>
@@ -837,6 +835,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtCantProductoaComprar">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCantProductoaComprarKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnAddProductoComprar">
               <Properties>

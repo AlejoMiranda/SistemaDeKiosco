@@ -40,7 +40,7 @@ public class Data {
     }
 
     public List<Producto> getProductoList() throws SQLException {
-        query = "SELECT * FROM producto";
+        query = "SELECT * FROM producto WHERE stock != 0";
 
         productoList = new ArrayList<>();
         Producto p;

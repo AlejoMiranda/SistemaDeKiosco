@@ -32,7 +32,7 @@ public class TMVerProducto implements TableModel {
     @Override
     // cantidad de columnas
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -44,6 +44,8 @@ public class TMVerProducto implements TableModel {
             case 1:
                 return "Nombre";
             case 2:
+                return "Stock";
+            case 3:
                 return "Descripción";
             default:
                 return "Precio";
@@ -71,6 +73,8 @@ public class TMVerProducto implements TableModel {
             case 1:
                 return p.getNombre();
             case 2:
+                return p.getStock();
+            case 3:
                 return p.getDescripcion();
             default:
                 return p.getPrecioVenta();
